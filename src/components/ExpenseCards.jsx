@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, TrendingUp, Activity, Target } from 'lucide-react';
+import { PhilippinePeso, TrendingUp, Activity, Target } from 'lucide-react';
 
 export default function ExpenseCards({ expenses = [], budget, setBudget }) {
     const totalExpenses = expenses.reduce((acc, curr) => acc + curr.amount, 0);
@@ -42,9 +42,9 @@ export default function ExpenseCards({ expenses = [], budget, setBudget }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card
                 title="Total Expenses"
-                value={`$${totalExpenses.toFixed(2)}`}
-                subtext={`of $${budget} monthly budget`}
-                icon={DollarSign}
+                value={`₱${totalExpenses.toFixed(2)}`}
+                subtext={`of ₱${budget} monthly budget`}
+                icon={PhilippinePeso}
                 colorClass="bg-blue-500"
                 delay=""
             >
@@ -76,7 +76,7 @@ export default function ExpenseCards({ expenses = [], budget, setBudget }) {
 
             <Card
                 title="Budget Goal"
-                value={`$${budget}`}
+                value={`₱${budget}`}
                 subtext="Click to adjust limit"
                 icon={Target}
                 colorClass="bg-emerald-500"
