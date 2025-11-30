@@ -55,11 +55,12 @@ export default function BudgetPlanning({ token, showToast }) {
             if (response.ok) {
                 showToast('Budget settings saved successfully!');
             } else {
-                showToast('Failed to save settings', 'error');
+                const errorText = await response.text();
+                showToast(`Failed to save settings: ${errorText}`, 'error');
             }
         } catch (error) {
             console.error('Error saving profile:', error);
-            showToast('Failed to save settings', 'error');
+            showToast(`Failed to save settings: ${error.message}`, 'error');
         }
     };
 
@@ -149,8 +150,8 @@ export default function BudgetPlanning({ token, showToast }) {
                                         key={cycle}
                                         onClick={() => setPayCycle(cycle)}
                                         className={`py-2 px-4 rounded-lg text-sm font-medium transition-all ${payCycle === cycle
-                                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                             }`}
                                     >
                                         {cycle}
@@ -167,8 +168,8 @@ export default function BudgetPlanning({ token, showToast }) {
                                         key={rule.id}
                                         onClick={() => setSavingsRule(rule.id)}
                                         className={`w-full text-left p-4 rounded-xl border transition-all flex items-center justify-between ${savingsRule === rule.id
-                                                ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-500'
-                                                : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
+                                            ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-500'
+                                            : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
                                             }`}
                                     >
                                         <span className="font-medium text-slate-700">{rule.label}</span>
