@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import API_BASE_URL from './config';
 
 import './index.css';
@@ -44,23 +44,23 @@ const App = () => {
         }
     };
 
-    const showToast = (message, type = 'success') => {
+    const showToast = useCallback((message, type = 'success') => {
         setToast({ message, type });
-    };
+    }, []);
 
-    const handleLogin = (newToken) => {
+    const handleLogin = useCallback((newToken) => {
         setToken(newToken);
         localStorage.setItem('token', newToken);
         showToast('Logged in successfully!');
-    };
+    }, [showToast]);
 
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         setToken(null);
         localStorage.removeItem('token');
         setExpenses([]);
         setActiveView('dashboard');
         showToast('Logged out.');
-    };
+    }, [showToast]);
 
     const [income, setIncome] = useState([]);
     const [savings, setSavings] = useState([]);

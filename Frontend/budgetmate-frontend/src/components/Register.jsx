@@ -28,7 +28,7 @@ export default function Register({ onRegisterSuccess, onSwitchToLogin }) {
                 const msg = await response.text();
                 setError(msg || 'Registration failed');
             }
-        } catch (err) {
+        } catch {
             setError('Something went wrong. Please try again.');
         }
     };

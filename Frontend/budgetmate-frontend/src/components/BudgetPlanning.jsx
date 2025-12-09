@@ -15,44 +15,44 @@ export default function BudgetPlanning({ token, showToast }) {
     const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/User/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserProfile(data);
+                    if (data.savingsRule) setCurrentRule(data.savingsRule);
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+        };
+
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const [incomesRes, savingsRes, expensesRes] = await Promise.all([
+                    fetch(`${API_BASE_URL}/api/Income`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${API_BASE_URL}/api/Savings`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${API_BASE_URL}/api/Expenses`, { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+
+                if (incomesRes.ok) setIncomes(await incomesRes.json());
+                if (savingsRes.ok) setSavings(await savingsRes.json());
+                if (expensesRes.ok) setExpenses(await expensesRes.json());
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                showToast('Failed to load data', 'error');
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchData();
         fetchProfile();
-    }, []);
-
-    const fetchProfile = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/User/profile`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setUserProfile(data);
-                if (data.savingsRule) setCurrentRule(data.savingsRule);
-            }
-        } catch (error) {
-            console.error('Error fetching profile:', error);
-        }
-    };
-
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            const [incomesRes, savingsRes, expensesRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/api/Income`, { headers: { 'Authorization': `Bearer ${token}` } }),
-                fetch(`${API_BASE_URL}/api/Savings`, { headers: { 'Authorization': `Bearer ${token}` } }),
-                fetch(`${API_BASE_URL}/api/Expenses`, { headers: { 'Authorization': `Bearer ${token}` } })
-            ]);
-
-            if (incomesRes.ok) setIncomes(await incomesRes.json());
-            if (savingsRes.ok) setSavings(await savingsRes.json());
-            if (expensesRes.ok) setExpenses(await expensesRes.json());
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            showToast('Failed to load data', 'error');
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, [token, showToast]);
 
     const handleUpdateRule = async (rule) => {
         if (!userProfile) return;
@@ -71,7 +71,7 @@ export default function BudgetPlanning({ token, showToast }) {
             } else {
                 showToast('Failed to update rule', 'error');
             }
-        } catch (error) {
+        } catch {
             showToast('Error updating rule', 'error');
         }
     };
@@ -90,7 +90,7 @@ export default function BudgetPlanning({ token, showToast }) {
                 setNewIncome({ source: '', amount: '' });
                 showToast('Income added successfully!');
             }
-        } catch (error) {
+        } catch {
             showToast('Failed to add income', 'error');
         }
     };
@@ -109,7 +109,7 @@ export default function BudgetPlanning({ token, showToast }) {
                 setNewSavings({ description: '', amount: '' });
                 showToast('Savings added successfully!');
             }
-        } catch (error) {
+        } catch {
             showToast('Failed to add savings', 'error');
         }
     };
@@ -120,7 +120,7 @@ export default function BudgetPlanning({ token, showToast }) {
             await fetch(`${API_BASE_URL}/api/Income/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
             setIncomes(incomes.filter(i => i.id !== id));
             showToast('Income deleted');
-        } catch (error) {
+        } catch {
             showToast('Failed to delete income', 'error');
         }
     };
@@ -131,7 +131,7 @@ export default function BudgetPlanning({ token, showToast }) {
             await fetch(`${API_BASE_URL}/api/Savings/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
             setSavings(savings.filter(s => s.id !== id));
             showToast('Savings deleted');
-        } catch (error) {
+        } catch {
             showToast('Failed to delete savings', 'error');
         }
     };

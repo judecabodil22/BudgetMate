@@ -23,28 +23,31 @@ export default function ExpenseCards({ expenses = [], budget, setBudget, userPro
                         userProfile.savingsRule === '50/50' ? 0.5 : 0.2
     )) : 0;
 
-    const Card = ({ title, value, subtext, icon: Icon, colorClass, delay, children }) => (
-        <div className={`glass-card p-6 animate-fade-in ${delay} flex flex-col justify-between h-full`}>
-            <div>
-                <div className="flex justify-between items-start mb-4">
-                    <div className={`p-3 rounded-xl ${colorClass} bg-opacity-10`}>
-                        <Icon className={`w-6 h-6 ${colorClass.replace('bg-', 'text-')}`} />
-                    </div>
-                    {title === 'Total Expenses' && (
-                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${isOverBudget ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600'}`}>
-                            {isOverBudget ? 'Over Budget' : 'On Track'}
-                        </span>
-                    )}
-                </div>
+    const Card = ({ title, value, subtext, icon, colorClass, delay, children }) => {
+        const Icon = icon;
+        return (
+            <div className={`glass-card p-6 animate-fade-in ${delay} flex flex-col justify-between h-full`}>
                 <div>
-                    <h3 className="text-slate-500 text-sm font-medium mb-1">{title}</h3>
-                    <p className="text-2xl font-bold text-slate-800">{value}</p>
-                    {subtext && <p className="text-xs text-slate-400 mt-2">{subtext}</p>}
+                    <div className="flex justify-between items-start mb-4">
+                        <div className={`p-3 rounded-xl ${colorClass} bg-opacity-10`}>
+                            <Icon className={`w-6 h-6 ${colorClass.replace('bg-', 'text-')}`} />
+                        </div>
+                        {title === 'Total Expenses' && (
+                            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${isOverBudget ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                                {isOverBudget ? 'Over Budget' : 'On Track'}
+                            </span>
+                        )}
+                    </div>
+                    <div>
+                        <h3 className="text-slate-500 text-sm font-medium mb-1">{title}</h3>
+                        <p className="text-2xl font-bold text-slate-800">{value}</p>
+                        {subtext && <p className="text-xs text-slate-400 mt-2">{subtext}</p>}
+                    </div>
                 </div>
+                {children && <div className="mt-4">{children}</div>}
             </div>
-            {children && <div className="mt-4">{children}</div>}
-        </div>
-    );
+        );
+    };
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

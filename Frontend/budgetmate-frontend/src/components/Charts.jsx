@@ -27,7 +27,7 @@ ChartJS.register(
     Filler
 );
 
-export default function Charts({ expenses = [], income = [], savings = [], budgetBreakdown }) {
+export default function Charts({ expenses = [], savings = [], budgetBreakdown }) {
     const doughnutData = useMemo(() => {
         const categories = {};
         expenses.forEach(e => {

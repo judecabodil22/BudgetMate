@@ -23,7 +23,7 @@ export default function Login({ onLogin, onSwitchToRegister }) {
             } else {
                 setError('Invalid username or password');
             }
-        } catch (err) {
+        } catch {
             setError('Something went wrong. Please try again.');
         }
     };

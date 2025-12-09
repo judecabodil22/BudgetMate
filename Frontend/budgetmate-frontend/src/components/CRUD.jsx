@@ -78,7 +78,7 @@ export default function CRUD({ expenses, onRefresh, showToast, token }) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(pendingTransactions.map(({ tempId, ...rest }) => rest))
+        body: JSON.stringify(pendingTransactions.map(t => { const copy = { ...t }; delete copy.tempId; return copy; }))
       });
 
       if (response.ok) {
